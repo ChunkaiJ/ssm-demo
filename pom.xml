@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jck</groupId>
+    <artifactId>education-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>edu-model</module>
+        <module>edu-dao</module>
+        <module>edu-service</module>
+        <module>edu-staff</module>
+        <module>edu-api</module>
+    </modules>
+    <!-- 父工程，使用 pom 打包格式 -->
+    <packaging>pom</packaging>
+
+    <!-- 自定义标签，多用于指定版本号 -->
+    <properties>
+        <junit.version>4.11</junit.version>
+        <spring.version>4.3.14.RELEASE</spring.version>
+        <mybatis.version>3.4.1</mybatis.version>
+        <mybatis-spring.version>1.3.1</mybatis-spring.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <jstl.version>1.2</jstl.version>
+        <taglibs.version>1.1.2</taglibs.version>
+        <c3p0.version>0.9.5.2</c3p0.version>
+        <mysql.version>5.1.35</mysql.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
+        <servlet-jsp-api.version>2.3.1</servlet-jsp-api.version>
+        <jetty.version>9.4.17.v20190418</jetty.version>
+    </properties>
+
+    <!--
+        依赖管理，父工程中用于指定各依赖（包含版本号），子模块中【声明】该依赖即可，无需指定版本号
+        注意：
+            1. <dependencyManagement> 中的依赖子模块不声明是不会引入的，可以解决冗余问题；
+            2. 子模块声明的依赖，若不指定 <version>/<scope> 默认从父工程里获取，若自行指明
+            则不会通过父工程获取，而是根据设定获取对应依赖
+        依赖管理的好处：
+            1. 若严格遵循了依赖管理，则所有依赖的版本控制都在父工程 pom 文件中，后期若要
+        升级、降级某个依赖，只需要修改这一处即可；
+            2. 相对于 <dependencies> 进行依赖传播（会受 scope 影响），子模块不会无脑引入
+        父工程的依赖，造成【依赖冗余】；
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringMVC 相关
+                0、spring-webmvc 包含：
+                1、commons-logging
+                2、spring-aop
+                3、spring-beans
+                4、spring-context
+                5、spring-core
+                6、spring-expression
+                7、spring-web
+            -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- spring aspects 包含了 aspectj weaver -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- spring-jdbc 包含了 spring-tx -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!-- SpringMVC 结束 -->
+
+            <!-- mybatis 需要两个包！-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <!-- mybatis-spring -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+            </dependency>
+
+            <!-- mysql 数据库驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- c3p0 数据库连接池（数据源）-->
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>${c3p0.version}</version>
+            </dependency>
+
+            <!-- jstl 标签类-->
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+            </dependency>
+
+            <!-- jsp 标签库 -->
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>${taglibs.version}</version>
+            </dependency>
+
+            <!-- servlet 代码相关提示，无需打包，用 provided -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- jsp 页面提示信息，无需打包，用 provided -->
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>javax.servlet.jsp-api</artifactId>
+                <version>${servlet-jsp-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- log4j 日志 -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- slf4j-log4j12 包含了 slf4j-api -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--&lt;!&ndash; 指定 maven 编译时用得 jdk 版本 &ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
+
+</project>
